@@ -123,7 +123,7 @@ textarea{width:100%;height:min(42dvh,380px);background:var(--ta);color:var(--fg)
 .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
 .acts button{padding:0 18px}
 
-#plDlg,#phDlg,#bgDlg,#spdDlg{padding:0;width:min(560px,94vw);overflow:hidden}
+#plDlg,#phDlg,#bgDlg,#spdDlg,#slpDlg{padding:0;width:min(560px,94vw);overflow:hidden}
 .plhead{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 6px}
 .plhead h2{margin:0;font-size:17px}
 #plist,#qlist{list-style:none;margin:0;padding:6px 10px}
@@ -193,6 +193,10 @@ body.playing .eq i{animation-play-state:running}
 .vol .ico{width:36px;height:36px;min-width:36px;min-height:36px}
 .vol .spd{min-width:46px;min-height:30px;height:30px;padding:0 9px;margin-left:6px;border-radius:99px;font-size:12px;font-variant-numeric:tabular-nums}
 .vol .spd.on{color:var(--rep);border-color:var(--rep-bd);background:var(--rep-bg)}
+.vol .slp{min-width:30px;width:30px;min-height:30px;height:30px;padding:0;margin-left:4px;border-radius:99px;display:inline-flex;align-items:center;justify-content:center;font-size:11.5px;font-variant-numeric:tabular-nums}
+.vol .slp.on{width:auto;min-width:30px;padding:0 9px;color:var(--rep);border-color:var(--rep-bd);background:var(--rep-bg)}
+.vol .slp svg{width:16px;height:16px}
+.vol .slp.on svg{display:none}
 .spdbody{padding:0 18px}
 .spdval{padding:4px 0 8px;font-size:44px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}
 .spdbody input[type=range]{width:100%;flex:none}
@@ -214,7 +218,7 @@ body.playing .eq i{animation-play-state:running}
 .custom button{padding:0 16px;font-size:13px}
 input[type=color]{width:46px;height:38px;padding:2px;border:1px solid var(--bd);border-radius:10px;background:none;cursor:pointer}
 @media (min-width:900px){.bar{position:relative}.vol{position:absolute;right:32px;top:22px;margin:0;width:230px}}
-@media (max-width:639px){#plDlg,#phDlg,#bgDlg,#spdDlg{margin:auto 0 0;width:100%;max-width:none;border-radius:22px 22px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}.tools{gap:6px}.tools button{min-width:42px;min-height:42px}}
+@media (max-width:639px){#plDlg,#phDlg,#bgDlg,#spdDlg,#slpDlg{margin:auto 0 0;width:100%;max-width:none;border-radius:22px 22px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}.tools{gap:6px}.tools button{min-width:42px;min-height:42px}}
 @media (min-width:640px){.lbl{display:inline}.tools button{padding:0 16px}h1{font-size:18px}.cover.has-photo{width:62px;height:62px}header{padding:16px 24px}}
 @media (min-width:900px){.line{font-size:clamp(34px,3.6vw,56px)}.bar{padding:10px 32px 24px}}
 @media (max-height:520px) and (orientation:landscape){#play{width:48px;height:48px}.bar{padding-bottom:10px}.line{font-size:clamp(20px,4.4vw,30px)}#stage::before,#stage::after{height:24vh}}
@@ -251,7 +255,7 @@ input[type=color]{width:46px;height:38px;padding:2px;border:1px solid var(--bd);
     <button id="rep" class="ico" aria-label="Chế độ lặp" aria-pressed="true"></button>
   </div>
   <div class="row"><span id="cur">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Tua"><span id="dur">0:00</span></div>
-  <div class="vol" id="volbox"><button id="mute" class="ico" aria-label="Tắt/bật tiếng"></button><input id="vol" type="range" min="0" max="100" value="100" aria-label="Âm lượng"><button id="spdBtn" class="spd" type="button" aria-label="Tốc độ phát" title="Tốc độ phát">1×</button></div>
+  <div class="vol" id="volbox"><button id="mute" class="ico" aria-label="Tắt/bật tiếng"></button><input id="vol" type="range" min="0" max="100" value="100" aria-label="Âm lượng"><button id="spdBtn" class="spd" type="button" aria-label="Tốc độ phát" title="Tốc độ phát">1×</button><button id="slpBtn" class="slp" type="button" aria-label="Hẹn giờ tắt nhạc" title="Hẹn giờ tắt nhạc"></button></div>
 </div>
 
 <div class="credit">made by Nam <i>♥</i></div>
@@ -310,6 +314,17 @@ input[type=color]{width:46px;height:38px;padding:2px;border:1px solid var(--bd);
     <div class="switchrow"><span>Tim bay lên khi sang câu mới</span><button id="heartsBtn" class="switch" type="button" role="switch" aria-checked="true" aria-label="Hiệu ứng tim"></button></div>
     <div class="plfoot"><span>Hiệu ứng chạy đúng lúc câu hát đến mốc thời gian trong file lời. Bấm khung xem thử để xem lại.</span></div>
   </div>
+</dialog>
+
+<dialog id="slpDlg" aria-label="Hẹn giờ tắt nhạc">
+  <div class="plhead"><h2>Hẹn giờ tắt nhạc</h2><button id="slpClose" class="ico" aria-label="Đóng"></button></div>
+  <div class="switchrow"><span>Bật hẹn giờ</span><button id="slpOn" class="switch" type="button" role="switch" aria-checked="false" aria-label="Bật hẹn giờ"></button></div>
+  <div class="spdbody">
+    <div class="spdval" id="slpVal">30 phút</div>
+    <input id="slpRange" type="range" min="5" max="600" step="5" value="30" aria-label="Số phút">
+  </div>
+  <div class="chips" id="slpChips" role="radiogroup" aria-label="Mốc thời gian"></div>
+  <div class="plfoot"><span id="slpNote">Nhạc sẽ nhỏ dần rồi tự dừng khi hết giờ. Chọn “Hết bài này” để dừng khi bài đang nghe kết thúc.</span></div>
 </dialog>
 
 <dialog id="spdDlg" aria-label="Tốc độ phát">
@@ -1218,6 +1233,57 @@ function setTab(t){
   $('prev').onclick = replayPrev;
   document.querySelectorAll('.tabs button').forEach(b => { b.onclick = () => setTab(b.dataset.t); });
   setTab('bg');
+})();
+
+// ---------- Hẹn giờ tắt nhạc ----------
+(function(){
+  const btn = $('slpBtn'), dlg = $('slpDlg'), rng = $('slpRange'), PRESETS = [5, 10, 15, 30, 45, 60, 90, 120, 180, 240];
+  const MOON = svg('<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>');
+  let mins = 30, on = false, mode = 'time', endAt = 0, tick = null, fading = false;
+  try{ const m = parseInt(localStorage.getItem('lve-sleep')); if (m >= 5 && m <= 600) mins = m; if (localStorage.getItem('lve-sleepm') === 'song') mode = 'song'; }catch(e){}
+  const fmt = ms => { const t = Math.max(0, Math.ceil(ms / 1000)), h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), s = t % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(s).padStart(2, '0'); };
+  const hm = m => m < 60 ? m + ' phút' : Math.floor(m / 60) + ' giờ' + (m % 60 ? ' ' + m % 60 + ' phút' : '');
+  function render(){
+    const left = endAt - Date.now();
+    btn.classList.toggle('on', on);
+    btn.innerHTML = on ? '' : MOON; if (on) btn.textContent = mode === 'song' ? 'Hết bài' : fmt(left);
+    $('slpOn').setAttribute('aria-checked', on);
+    $('slpVal').textContent = mode === 'song' ? 'Hết bài này' : (on ? 'Còn ' + fmt(left) : hm(mins));
+    rng.value = mins; rng.style.setProperty('--fill', ((mins - 5) / 595 * 100) + '%'); rng.disabled = mode === 'song';
+    document.querySelectorAll('#slpChips button').forEach(b => b.setAttribute('aria-checked', b.dataset.m === 'song' ? mode === 'song' : (mode === 'time' && +b.dataset.m === mins)));
+  }
+  function stopTick(){ clearInterval(tick); tick = null; }
+  function fire(){
+    stopTick(); on = false; render();
+    if (audio.paused){ return; }
+    const v0 = audio.volume; fading = true; let n = 0;
+    const f = setInterval(() => {
+      n++; try{ audio.volume = Math.max(0, v0 * (1 - n / 20)); }catch(e){}
+      if (n >= 20){ clearInterval(f); audio.pause(); try{ audio.volume = v0; }catch(e){} fading = false; }
+    }, 250);
+  }
+  function start(){
+    on = true; endAt = Date.now() + mins * 60000; stopTick();
+    if (mode === 'time') tick = setInterval(() => { if (Date.now() >= endAt) fire(); else render(); }, 500);
+    render();
+  }
+  function stop(){ on = false; stopTick(); render(); }
+  function save(){ try{ localStorage.setItem('lve-sleep', String(mins)); localStorage.setItem('lve-sleepm', mode); }catch(e){} }
+  PRESETS.forEach(m => { const b = el('button', '', hm(m)); b.type = 'button'; b.dataset.m = m; b.setAttribute('role', 'radio'); b.onclick = () => { mins = m; mode = 'time'; save(); on ? start() : render(); }; $('slpChips').appendChild(b); });
+  { const b = el('button', '', 'Hết bài này'); b.type = 'button'; b.dataset.m = 'song'; b.setAttribute('role', 'radio'); b.onclick = () => { mode = 'song'; save(); on ? start() : render(); }; $('slpChips').appendChild(b); }
+  rng.oninput = () => { mins = parseInt(rng.value); mode = 'time'; save(); on ? start() : render(); };
+  $('slpOn').onclick = () => { on ? stop() : start(); };
+  // hết bài: chặn việc tự chuyển bài, dừng lại
+  const prevEnded = audio.onended;
+  audio.onended = function(e){
+    if (on && mode === 'song'){ stop(); setPlayIcon(false); return; }
+    return prevEnded && prevEnded.call(this, e);
+  };
+  btn.onclick = () => dlg.showModal();
+  $('slpClose').innerHTML = IC.x; $('slpClose').onclick = () => dlg.close();
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  window.sleepApi = {get: () => ({on, mode, mins, endAt, fading}), fireNow: fire};
+  render();
 })();
 
 // ---------- Tốc độ phát ----------
